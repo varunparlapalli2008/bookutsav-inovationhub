@@ -507,3 +507,44 @@
   font-size: 0.8rem;
   color: var(--text-secondary);
 }
+
+/* Danger & Cancellation Styles */
+.btn-danger {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  color: #fff;
+  border: none;
+  box-shadow: 0 0 10px rgba(255, 65, 108, 0.4);
+}
+.btn-danger::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, #ff4b2b, #ff416c);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity var(--transition-fast);
+}
+.btn-danger:hover::before {
+  opacity: 1;
+}
+.btn-danger:hover {
+  box-shadow: 0 0 20px #ff416c, 0 0 40px #ff4b2b;
+  transform: translateY(-2px);
+}
+.btn-danger:active {
+  transform: translateY(1px);
+}
+
+.badge-danger {
+  background: rgba(255, 65, 108, 0.1);
+  color: #ff416c;
+  border: 1px solid #ff416c;
+}
+
+.booking-card.cancelled {
+  opacity: 0.6;
+  filter: grayscale(80%);
+}
+.booking-card.cancelled .btn {
+  pointer-events: none;
+}
