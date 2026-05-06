@@ -22,22 +22,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2500); // 2.5s splash screen
   }
 
-  // --- Form Toggling ---
-  const showSignupBtn = document.getElementById('showSignup');
-  const showLoginBtn = document.getElementById('showLogin');
+  // --- Tab Toggling ---
+  const tabLogin = document.getElementById('tabLogin');
+  const tabSignup = document.getElementById('tabSignup');
   const loginForm = document.getElementById('loginForm');
   const signupForm = document.getElementById('signupForm');
   
-  if (showSignupBtn && showLoginBtn && loginForm && signupForm) {
-    showSignupBtn.addEventListener('click', (e) => {
-      e.preventDefault();
+  if (tabLogin && tabSignup && loginForm && signupForm) {
+    tabSignup.addEventListener('click', () => {
+      // Switch active tab UI
+      tabSignup.classList.add('active');
+      tabSignup.style.color = 'var(--accent-primary)';
+      tabSignup.style.borderBottom = '2px solid var(--accent-primary)';
+      tabSignup.style.background = 'rgba(0, 240, 255, 0.05)';
+      
+      tabLogin.classList.remove('active');
+      tabLogin.style.color = 'var(--text-secondary)';
+      tabLogin.style.borderBottom = '2px solid transparent';
+      tabLogin.style.background = 'transparent';
+      
+      // Toggle forms
       loginForm.style.display = 'none';
       signupForm.style.display = 'block';
       signupForm.classList.add('page-transition-enter');
     });
     
-    showLoginBtn.addEventListener('click', (e) => {
-      e.preventDefault();
+    tabLogin.addEventListener('click', () => {
+      // Switch active tab UI
+      tabLogin.classList.add('active');
+      tabLogin.style.color = 'var(--accent-primary)';
+      tabLogin.style.borderBottom = '2px solid var(--accent-primary)';
+      tabLogin.style.background = 'rgba(0, 240, 255, 0.05)';
+      
+      tabSignup.classList.remove('active');
+      tabSignup.style.color = 'var(--text-secondary)';
+      tabSignup.style.borderBottom = '2px solid transparent';
+      tabSignup.style.background = 'transparent';
+      
+      // Toggle forms
       signupForm.style.display = 'none';
       loginForm.style.display = 'block';
       loginForm.classList.add('page-transition-enter');

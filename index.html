@@ -125,80 +125,91 @@
     <!-- Auth Container -->
     <div id="authContainer" class="auth-wrapper">
         
-        <!-- Login Form -->
-        <div id="loginForm" class="glass-card auth-card animated-border">
-            <div class="auth-logo">
-                <h2 class="text-gradient"><i class="fa-solid fa-bolt"></i> BookUtsav</h2>
-                <p class="text-secondary mt-1">Enter the event horizon</p>
+        <div class="glass-card auth-card animated-border" style="padding: 0; overflow: hidden; max-width: 450px;">
+            <!-- Tab Switcher -->
+            <div class="auth-tabs" style="display: flex; background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--border-glass);">
+                <div id="tabLogin" class="auth-tab active" style="flex: 1; padding: 1.25rem; cursor: pointer; transition: all 0.3s; font-weight: 600; letter-spacing: 1px; color: var(--accent-primary); border-bottom: 2px solid var(--accent-primary); background: rgba(0, 240, 255, 0.05);">LOGIN</div>
+                <div id="tabSignup" class="auth-tab" style="flex: 1; padding: 1.25rem; cursor: pointer; transition: all 0.3s; font-weight: 600; letter-spacing: 1px; color: var(--text-secondary); border-bottom: 2px solid transparent;">SIGN UP</div>
             </div>
-            
-            <form>
-                <div class="floating-label-group">
-                    <input type="email" id="loginEmail" class="form-control" placeholder=" " required>
-                    <label>Email Address</label>
-                </div>
-                
-                <div class="floating-label-group">
-                    <input type="password" id="loginPass" class="form-control" placeholder=" " required>
-                    <label>Password</label>
-                </div>
-                
-                <div class="flex justify-between items-center mb-3 text-sm">
-                    <label class="flex items-center gap-1 text-secondary" style="font-size: 0.875rem; cursor: pointer;">
-                        <input type="checkbox" style="accent-color: var(--accent-primary);"> Remember me
-                    </label>
-                    <a href="#" id="forgotPassBtn" class="text-primary" style="color: var(--accent-primary); font-size: 0.875rem;">Forgot Password?</a>
-                </div>
-                
-                <button id="doLogin" class="btn btn-primary" style="width: 100%;">Initialize Session</button>
-            </form>
-            
-            <div class="divider">OR CONNECT WITH</div>
-            
-            <div class="social-login">
-                <button type="button" class="btn-icon social-btn" data-provider="Google"><i class="fab fa-google"></i></button>
-                <button type="button" class="btn-icon social-btn" data-provider="Apple"><i class="fab fa-apple"></i></button>
-                <button type="button" class="btn-icon social-btn" data-provider="GitHub"><i class="fab fa-github"></i></button>
-            </div>
-            
-            <div class="auth-switch">
-                New to BookUtsav? <a href="#" id="showSignup">Create an identity</a>
-            </div>
-        </div>
 
-        <!-- Signup Form -->
-        <div id="signupForm" class="glass-card auth-card animated-border" style="display: none;">
-            <div class="auth-logo">
-                <h2 class="text-gradient"><i class="fa-solid fa-user-astronaut"></i> Join BookUtsav</h2>
-                <p class="text-secondary mt-1">Create your digital presence</p>
-            </div>
-            
-            <form>
-                <div class="floating-label-group">
-                    <input type="text" id="signupName" class="form-control" placeholder=" " required>
-                    <label>Full Name</label>
+            <div style="padding: var(--space-xl);">
+                <!-- Login Form -->
+                <div id="loginForm">
+                    <div class="auth-logo">
+                        <h2 class="text-gradient"><i class="fa-solid fa-bolt"></i> BookUtsav</h2>
+                        <p class="text-secondary mt-1">Enter the event horizon</p>
+                    </div>
+                    
+                    <form>
+                        <div class="floating-label-group">
+                            <input type="email" id="loginEmail" class="form-control" placeholder=" " required>
+                            <label>Email Address</label>
+                        </div>
+                        
+                        <div class="floating-label-group">
+                            <input type="password" id="loginPass" class="form-control" placeholder=" " required>
+                            <label>Password</label>
+                        </div>
+                        
+                        <div class="flex justify-between items-center mb-3 text-sm">
+                            <label class="flex items-center gap-1 text-secondary" style="font-size: 0.875rem; cursor: pointer;">
+                                <input type="checkbox" style="accent-color: var(--accent-primary);"> Remember me
+                            </label>
+                            <a href="#" id="forgotPassBtn" class="text-primary" style="color: var(--accent-primary); font-size: 0.875rem;">Forgot Password?</a>
+                        </div>
+                        
+                        <button id="doLogin" class="btn btn-primary" style="width: 100%;">Initialize Session</button>
+                    </form>
+                    
+                    <div class="divider">OR CONNECT WITH</div>
+                    
+                    <div class="social-login">
+                        <button type="button" class="btn-icon social-btn" data-provider="Google"><i class="fab fa-google"></i></button>
+                        <button type="button" class="btn-icon social-btn" data-provider="Apple"><i class="fab fa-apple"></i></button>
+                        <button type="button" class="btn-icon social-btn" data-provider="GitHub"><i class="fab fa-github"></i></button>
+                    </div>
                 </div>
-                
-                <div class="floating-label-group">
-                    <input type="email" id="signupEmail" class="form-control" placeholder=" " required>
-                    <label>Email Address</label>
+
+                <!-- Signup Form -->
+                <div id="signupForm" style="display: none;">
+                    <div class="auth-logo">
+                        <h2 class="text-gradient"><i class="fa-solid fa-user-astronaut"></i> Join BookUtsav</h2>
+                        <p class="text-secondary mt-1">Create your digital presence</p>
+                    </div>
+                    
+                    <form>
+                        <div class="floating-label-group">
+                            <input type="text" id="signupName" class="form-control" placeholder=" " required>
+                            <label>Full Name</label>
+                        </div>
+                        
+                        <div class="floating-label-group">
+                            <input type="email" id="signupEmail" class="form-control" placeholder=" " required>
+                            <label>Email Address</label>
+                        </div>
+                        
+                        <div class="floating-label-group">
+                            <input type="password" id="signupPass" class="form-control" placeholder=" " required>
+                            <label>Password</label>
+                        </div>
+                        
+                        <div class="mb-4 text-xs text-secondary" style="text-align: left;">
+                            <label class="flex items-start gap-2 cursor-pointer">
+                                <input type="checkbox" checked style="accent-color: var(--accent-primary); margin-top: 3px;">
+                                <span>I agree to the <a href="#" class="text-primary">Terms of Service</a> and <a href="#" class="text-primary">Privacy Policy</a>.</span>
+                            </label>
+                        </div>
+                        
+                        <button id="doSignup" class="btn btn-primary" style="width: 100%;">Generate Identity</button>
+                    </form>
+                    
+                    <div class="divider">OR SIGN UP WITH</div>
+                    
+                    <div class="social-login">
+                        <button type="button" class="btn-icon social-btn" data-provider="Google"><i class="fab fa-google"></i></button>
+                        <button type="button" class="btn-icon social-btn" data-provider="Apple"><i class="fab fa-apple"></i></button>
+                    </div>
                 </div>
-                
-                <div class="floating-label-group">
-                    <input type="tel" id="signupPhone" class="form-control" placeholder=" ">
-                    <label>Phone Number (Optional)</label>
-                </div>
-                
-                <div class="floating-label-group">
-                    <input type="password" id="signupPass" class="form-control" placeholder=" " required>
-                    <label>Password</label>
-                </div>
-                
-                <button id="doSignup" class="btn btn-primary mt-2" style="width: 100%;">Generate Identity</button>
-            </form>
-            
-            <div class="auth-switch">
-                Already registered? <a href="#" id="showLogin">Initialize session</a>
             </div>
         </div>
 
