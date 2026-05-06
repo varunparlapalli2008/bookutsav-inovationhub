@@ -156,78 +156,272 @@
         </div>
     </div>
 
+    <!-- Cancellation Confirmation Modal -->
+    <div id="cancelConfirmModal" class="modal-overlay">
+        <div class="glass-panel modal-content" style="padding: 2rem; max-width: 450px;">
+            <div class="text-center mb-4">
+                <div style="width: 70px; height: 70px; background: rgba(255, 65, 108, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; border: 1px solid #ff416c; animation: pulse-glow 2s infinite alternate;">
+                    <i class="fa-solid fa-circle-exclamation" style="font-size: 2rem; color: #ff416c;"></i>
+                </div>
+                <h2 class="text-gradient">Confirm Cancellation</h2>
+                <p class="text-secondary mt-2">Are you sure you want to cancel this booking?</p>
+            </div>
+
+            <div class="glass-card mb-4" style="background: rgba(0,0,0,0.3); padding: 1rem;">
+                <div class="flex justify-between mb-2">
+                    <span class="text-secondary">Original Amount:</span>
+                    <span id="cancelOrigPrice" class="font-bold">$0.00</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="text-secondary">Platform Fee (30%):</span>
+                    <span id="cancelFee" class="text-danger">-$0.00</span>
+                </div>
+                <div style="border-top: 1px solid var(--border-glass); margin: 10px 0; padding-top: 10px;" class="flex justify-between">
+                    <span class="font-bold">Refund Amount (70%):</span>
+                    <span id="cancelRefundAmount" class="text-primary font-bold" style="font-size: 1.25rem;">$0.00</span>
+                </div>
+            </div>
+
+            <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;" class="mb-4">
+                <i class="fa-solid fa-shield-halved mr-1"></i> <strong>Policy:</strong> As per your selection, a 70% refund applies to this cancellation. Funds will be returned to your original payment method.
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <button class="btn btn-danger" id="confirmCancelBtn">Confirm Cancellation</button>
+                <button class="btn btn-outline" id="closeCancelModalBtn">Keep My Booking</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Processing Modal -->
+    <div id="processingModal" class="modal-overlay">
+        <div class="glass-panel modal-content text-center" style="padding: 3rem; max-width: 400px;">
+            <div class="spinner mx-auto mb-4" style="width: 60px; height: 60px; border-width: 4px;"></div>
+            <h2 id="processingTitle">Processing Refund...</h2>
+            <p id="processingSub" class="text-secondary mt-2">Communicating with your bank...</p>
+            
+            <div class="progress-container mt-4">
+                <div class="progress-bar" id="processingBar"></div>
+            </div>
+            
+            <div class="mt-4" style="font-size: 0.8rem; color: var(--text-muted);" id="processingStep">
+                Securing transaction channel...
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal-overlay">
+        <div class="glass-panel modal-content text-center" style="padding: 3rem; max-width: 500px; position: relative; overflow: hidden;" id="confettiContainer">
+            <svg class="success-checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="success-checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="success-checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+            
+            <h1 class="text-gradient">Cancellation Successful</h1>
+            <p class="text-secondary mt-2 mb-4">Your refund of <span id="finalRefundAmount" class="text-primary font-bold"></span> has been initiated.</p>
+            
+            <div class="glass-card text-left mb-4" style="background: rgba(0,240,255,0.05); border-color: rgba(0,240,255,0.2);">
+                <div class="flex justify-between mb-1">
+                    <span class="text-secondary text-sm">Status:</span>
+                    <span class="text-primary font-bold text-sm">REFUND INITIATED</span>
+                </div>
+                <div class="flex justify-between mb-1">
+                    <span class="text-secondary text-sm">Transaction ID:</span>
+                    <span class="text-sm font-mono" id="txId">#TXN-8827-X92</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-secondary text-sm">Estimated Time:</span>
+                    <span class="text-sm">3-5 Business Days</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <button class="btn btn-primary" onclick="location.reload()">Return to My Bookings</button>
+                <a href="discovery.html" class="btn btn-outline">Continue Browsing Events</a>
+            </div>
+        </div>
+    </div>
+
     <script src="js/theme.js"></script>
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const list = document.getElementById('bookingList');
-            const bookings = window.dataManager.getBookings();
+            let bookings = window.dataManager.getBookings();
             
-            if (bookings.length === 0) {
-                list.innerHTML = `
-                    <div class="glass-card text-center" style="padding: 3rem;">
-                        <i class="fa-solid fa-ticket text-muted" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                        <h3 class="text-secondary">No bookings found</h3>
-                        <p class="text-muted mb-3">You haven't secured any event access yet.</p>
-                        <a href="discovery.html" class="btn btn-primary">Discover Events</a>
-                    </div>
-                `;
-                return;
-            }
-            
-            // Sort bookings newest first
-            bookings.sort((a, b) => new Date(b.bookingDate) - new Date(a.bookingDate));
-            
-            bookings.forEach((bkg, idx) => {
-                const event = window.dataManager.getEventById(bkg.eventId);
-                const evTitle = event ? event.title : bkg.eventTitle;
-                const evDate = event ? new Date(event.date) : new Date();
-                
-                const card = document.createElement('div');
-                card.className = `booking-card stagger-${(idx % 5) + 1}`;
-                card.innerHTML = `
-                    <div class="booking-date-col">
-                        <span class="text-primary font-bold" style="font-size: 1.5rem;">${evDate.getDate()}</span>
-                        <span class="text-secondary text-sm">${evDate.toLocaleString('default', { month: 'short' }).toUpperCase()}</span>
-                    </div>
-                    <div class="booking-info">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="badge badge-primary">CONFIRMED</span>
-                            <span class="text-secondary text-sm">ID: ${bkg.id.split('_')[1]}</span>
+            const renderBookings = () => {
+                list.innerHTML = '';
+                if (bookings.length === 0) {
+                    list.innerHTML = `
+                        <div class="glass-card text-center" style="padding: 3rem;">
+                            <i class="fa-solid fa-ticket text-muted" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                            <h3 class="text-secondary">No bookings found</h3>
+                            <p class="text-muted mb-3">You haven't secured any event access yet.</p>
+                            <a href="discovery.html" class="btn btn-primary">Discover Events</a>
                         </div>
-                        <h3 style="font-size: 1.25rem;">${evTitle}</h3>
-                        <p class="text-secondary text-sm mt-1">
-                            <i class="fa-solid fa-chair mr-1"></i> Seats: ${bkg.seats ? bkg.seats.join(', ') : 'General Access'}
-                        </p>
-                    </div>
-                    <div class="booking-actions">
-                        <div class="qr-mini"><i class="fa-solid fa-qrcode"></i></div>
-                        <button class="btn btn-outline view-pass-btn" data-id="${bkg.id}" data-title="${evTitle}" data-date="${evDate.toLocaleDateString()}" data-seats="${bkg.seats ? bkg.seats.join(', ') : 'General'}" style="padding: 0.5rem 1rem; font-size: 0.8rem; width: 100%;">View Pass</button>
-                    </div>
-                `;
-                list.appendChild(card);
-            });
-            
-            // View Pass Listeners
-            const passModal = document.getElementById('passModal');
-            document.getElementById('closePassModalBtn').addEventListener('click', () => {
-                passModal.classList.remove('active');
-            });
-
-            const passBtns = document.querySelectorAll('.view-pass-btn');
-            passBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    document.getElementById('modalTicketId').textContent = 'ID: ' + btn.dataset.id.split('_')[1];
-                    document.getElementById('modalEventTitle').textContent = btn.dataset.title;
-                    document.getElementById('modalEventDate').innerHTML = `<i class="fa-regular fa-calendar"></i> ${btn.dataset.date}`;
-                    document.getElementById('modalSeats').textContent = btn.dataset.seats;
+                    `;
+                    return;
+                }
+                
+                // Sort bookings newest first
+                bookings.sort((a, b) => new Date(b.bookingDate) - new Date(a.bookingDate));
+                
+                bookings.forEach((bkg, idx) => {
+                    const event = window.dataManager.getEventById(bkg.eventId);
+                    const evTitle = event ? event.title : bkg.eventTitle;
+                    const evDate = event ? new Date(event.date) : new Date();
+                    const isCancelled = bkg.status === 'cancelled';
                     
-                    passModal.classList.add('active');
+                    const card = document.createElement('div');
+                    card.className = `booking-card stagger-${(idx % 5) + 1} ${isCancelled ? 'cancelled' : ''}`;
+                    card.innerHTML = `
+                        <div class="booking-date-col">
+                            <span class="text-primary font-bold" style="font-size: 1.5rem;">${evDate.getDate()}</span>
+                            <span class="text-secondary text-sm">${evDate.toLocaleString('default', { month: 'short' }).toUpperCase()}</span>
+                        </div>
+                        <div style="width: 100px; height: 100%; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000;">
+                            <img src="${event ? event.image : 'https://picsum.photos/200'}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;">
+                        </div>
+                        <div class="booking-info">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="badge ${isCancelled ? 'badge-danger' : 'badge-primary'}">${isCancelled ? 'REFUNDED' : 'CONFIRMED'}</span>
+                                <span class="text-secondary text-sm">ID: ${bkg.id.split('_')[1]}</span>
+                            </div>
+                            <h3 style="font-size: 1.25rem;">${evTitle}</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 mt-2" style="font-size: 0.75rem; color: var(--text-secondary);">
+                                <div><i class="fa-solid fa-ticket mr-1"></i> Tickets: ${bkg.ticketCount || 1}</div>
+                                <div><i class="fa-solid fa-credit-card mr-1"></i> Paid: $${bkg.totalPrice || (event ? event.price : 0)}</div>
+                                <div><i class="fa-solid fa-calendar-check mr-1"></i> Booked: ${new Date(bkg.bookingDate).toLocaleDateString()}</div>
+                                <div><i class="fa-solid fa-wallet mr-1"></i> Method: UPI/Card</div>
+                            </div>
+                        </div>
+                        <div class="booking-actions">
+                            ${isCancelled ? `
+                                <div class="text-danger font-bold text-sm">CANCELLED</div>
+                                <div class="text-muted text-xs" style="font-size: 0.6rem;">${new Date(bkg.cancelledAt).toLocaleString()}</div>
+                            ` : `
+                                <div class="qr-mini"><i class="fa-solid fa-qrcode"></i></div>
+                                <button class="btn btn-outline view-pass-btn" data-id="${bkg.id}" data-title="${evTitle}" data-date="${evDate.toLocaleDateString()}" data-seats="${bkg.seats ? bkg.seats.join(', ') : 'General'}" style="padding: 0.4rem 1rem; font-size: 0.75rem; width: 100%;">View Pass</button>
+                                <button class="btn btn-danger cancel-trigger-btn" data-id="${bkg.id}" data-price="${bkg.totalPrice || (event ? event.price : 0)}" style="padding: 0.4rem 1rem; font-size: 0.75rem; width: 100%;">Cancel Ticket</button>
+                            `}
+                        </div>
+                    `;
+                    list.appendChild(card);
                 });
-            });
+                
+                attachListeners();
+            };
+
+            const attachListeners = () => {
+                // View Pass
+                const passModal = document.getElementById('passModal');
+                document.querySelectorAll('.view-pass-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.getElementById('modalTicketId').textContent = 'ID: ' + btn.dataset.id.split('_')[1];
+                        document.getElementById('modalEventTitle').textContent = btn.dataset.title;
+                        document.getElementById('modalEventDate').innerHTML = `<i class="fa-regular fa-calendar"></i> ${btn.dataset.date}`;
+                        document.getElementById('modalSeats').textContent = btn.dataset.seats;
+                        passModal.classList.add('active');
+                    });
+                });
+
+                // Cancel Trigger
+                const cancelModal = document.getElementById('cancelConfirmModal');
+                let currentCancelId = null;
+                let currentCancelPrice = 0;
+
+                document.querySelectorAll('.cancel-trigger-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        currentCancelId = btn.dataset.id;
+                        currentCancelPrice = parseFloat(btn.dataset.price);
+                        
+                        const refundAmount = currentCancelPrice * 0.7;
+                        const fee = currentCancelPrice * 0.3;
+
+                        document.getElementById('cancelOrigPrice').textContent = `$${currentCancelPrice.toFixed(2)}`;
+                        document.getElementById('cancelFee').textContent = `-$${fee.toFixed(2)}`;
+                        document.getElementById('cancelRefundAmount').textContent = `$${refundAmount.toFixed(2)}`;
+                        
+                        cancelModal.classList.add('active');
+                    });
+                });
+
+                document.getElementById('confirmCancelBtn').onclick = () => {
+                    cancelModal.classList.remove('active');
+                    startProcessing(currentCancelId, currentCancelPrice * 0.7);
+                };
+            };
+
+            const startProcessing = (id, refundAmount) => {
+                const procModal = document.getElementById('processingModal');
+                const procBar = document.getElementById('processingBar');
+                const procStep = document.getElementById('processingStep');
+                
+                procModal.classList.add('active');
+                
+                const steps = [
+                    "Verifying booking identity...",
+                    "Communicating with payment gateway...",
+                    "Calculating refund breakdown...",
+                    "Initiating UPI reversal...",
+                    "Finalizing transaction..."
+                ];
+
+                let stepIdx = 0;
+                const interval = setInterval(() => {
+                    if(stepIdx < steps.length) {
+                        procStep.textContent = steps[stepIdx];
+                        stepIdx++;
+                    } else {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            procModal.classList.remove('active');
+                            completeCancellation(id, refundAmount);
+                        }, 500);
+                    }
+                }, 600);
+            };
+
+            const completeCancellation = (id, refundAmount) => {
+                // Update Local Storage
+                let allBookings = window.dataManager.getBookings();
+                const bIdx = allBookings.findIndex(b => b.id === id);
+                if (bIdx !== -1) {
+                    allBookings[bIdx].status = 'cancelled';
+                    allBookings[bIdx].cancelledAt = new Date().toISOString();
+                    allBookings[bIdx].refundAmount = refundAmount;
+                    localStorage.setItem('bookings', JSON.stringify(allBookings));
+                }
+
+                // Show Success
+                document.getElementById('finalRefundAmount').textContent = `$${refundAmount.toFixed(2)}`;
+                document.getElementById('txId').textContent = '#TXN-' + Math.floor(Math.random()*10000) + '-' + id.split('_')[1];
+                document.getElementById('successModal').classList.add('active');
+                
+                createConfetti();
+            };
+
+            const createConfetti = () => {
+                const container = document.getElementById('confettiContainer');
+                for (let i = 0; i < 50; i++) {
+                    const c = document.createElement('div');
+                    c.className = 'confetti';
+                    c.style.left = Math.random() * 100 + '%';
+                    c.style.backgroundColor = ['#00f0ff', '#7000ff', '#ff416c'][Math.floor(Math.random()*3)];
+                    c.style.animationDelay = Math.random() * 2 + 's';
+                    container.appendChild(c);
+                }
+            };
+
+            document.getElementById('closePassModalBtn').onclick = () => document.getElementById('passModal').classList.remove('active');
+            document.getElementById('closeCancelModalBtn').onclick = () => document.getElementById('cancelConfirmModal').classList.remove('active');
+
+            renderBookings();
         });
     </script>
+</body>
+</html>
 </body>
 </html>
