@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookUtsav - Secure Payment</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .payment-container {
+            max-width: 600px;
+            margin: 100px auto 40px;
+        }
+        
+        .payment-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .payment-tab {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+        
+        .payment-tab.active {
+            background: rgba(0, 240, 255, 0.1);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
+        }
+        
+        .payment-form { display: none; }
+        .payment-form.active { display: block; animation: slide-up-fade 0.4s ease; }
+        
+        /* Card UI */
+        .credit-card-ui {
+            width: 100%;
+            height: 200px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, rgba(112,0,255,0.8), rgba(0,240,255,0.8));
+            padding: var(--space-lg);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            margin-bottom: var(--space-xl);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .credit-card-ui::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 60%);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+        
+        .chip {
+            width: 40px; height: 30px;
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            border-radius: 4px;
+        }
+        
+        /* UPI UI */
+        .qr-box {
+            width: 200px; height: 200px;
+            background: white;
+            padding: 10px;
+            border-radius: var(--radius-md);
+            margin: 0 auto var(--space-md);
+            display: flex; align-items: center; justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="booking.html" style="display:flex; align-items:center; gap:10px;">
+                    <div class="btn-icon" style="width:32px; height:32px; border:none; background:transparent;"><i class="fa-solid fa-arrow-left"></i></div>
+                    <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+                    BookUtsav Checkout
+                </a>
+            </div>
+            <div class="text-primary font-bold final-amount" style="font-size: 1.25rem;">$0</div>
+        </div>
+    </header>
+
+    <main class="container page-transition-enter">
+        <div class="payment-container">
+            
+            <div class="glass-panel" style="padding: var(--space-xl);">
+                <h2 class="text-center mb-4">Select Payment Method</h2>
+                
+                <div class="payment-tabs">
+                    <div class="payment-tab active" data-method="card">
+                        <i class="fa-regular fa-credit-card mb-1" style="font-size: 1.5rem; display: block;"></i>
+                        Credit/Debit Card
+                    </div>
+                    <div class="payment-tab" data-method="upi">
+                        <i class="fa-solid fa-qrcode mb-1" style="font-size: 1.5rem; display: block;"></i>
+                        UPI / QR Scan
+                    </div>
+                </div>
+                
+                <!-- Card Form -->
+                <div id="form-card" class="payment-form active">
+                    <div class="credit-card-ui shimmer-hover">
+                        <div class="flex justify-between items-center">
+                            <div class="chip"></div>
+                            <i class="fa-brands fa-cc-visa" style="font-size: 2rem; color: white;"></i>
+                        </div>
+                        <div>
+                            <div style="font-family: monospace; font-size: 1.5rem; letter-spacing: 2px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3);" class="mb-1">
+                                **** **** **** ****
+                            </div>
+                            <div class="flex justify-between text-sm" style="color: rgba(255,255,255,0.8);">
+                                <span>CARD HOLDER</span>
+                                <span>MM/YY</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <form>
+                        <div class="floating-label-group">
+                            <input type="text" class="form-control" placeholder=" " required maxlength="19">
+                            <label>Card Number</label>
+                        </div>
+                        
+                        <div class="flex gap-2 mb-3">
+                            <div class="floating-label-group" style="flex: 1; margin-bottom: 0;">
+                                <input type="text" class="form-control" placeholder=" " required maxlength="5">
+                                <label>Expiry (MM/YY)</label>
+                            </div>
+                            <div class="floating-label-group" style="flex: 1; margin-bottom: 0;">
+                                <input type="password" class="form-control" placeholder=" " required maxlength="3">
+                                <label>CVV</label>
+                            </div>
+                        </div>
+                        
+                        <div class="floating-label-group mb-4">
+                            <input type="text" class="form-control" placeholder=" " required>
+                            <label>Cardholder Name</label>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- UPI Form -->
+                <div id="form-upi" class="payment-form">
+                    <div class="text-center">
+                        <p class="text-secondary mb-3">Scan the QR code with any UPI app to pay <strong class="text-primary final-amount">$0</strong></p>
+                        
+                        <div class="qr-box">
+                            <i class="fa-solid fa-qrcode" style="font-size: 8rem; color: #333;"></i>
+                        </div>
+                        
+                        <div class="flex justify-center gap-2 mb-4">
+                            <div class="btn-icon" style="width: 50px; height: 50px;"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" style="width: 20px;" alt="GPay"></div>
+                            <div class="btn-icon" style="width: 50px; height: 50px;"><span style="color: #00baf2; font-weight: bold;">Paytm</span></div>
+                            <div class="btn-icon" style="width: 50px; height: 50px;"><span style="color: #6739b7; font-weight: bold;">PhPe</span></div>
+                        </div>
+                        
+                        <p class="text-secondary mb-2">Or enter UPI ID</p>
+                        <div class="floating-label-group mb-4">
+                            <input type="text" class="form-control text-center" placeholder=" ">
+                            <label style="left: 50%; transform: translateX(-50%) translateY(-50%);">username@upi</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="payBtn" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; box-shadow: var(--shadow-glow);">
+                    Pay <span class="final-amount ml-1">$0</span> securely
+                </button>
+                
+                <p class="text-center text-muted mt-3" style="font-size: 0.75rem;">
+                    <i class="fa-solid fa-lock"></i> 256-bit AES Encryption
+                </p>
+            </div>
+            
+        </div>
+    </main>
+
+    <script src="js/theme.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/booking.js"></script>
+</body>
+</html>

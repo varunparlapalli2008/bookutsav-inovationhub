@@ -1,0 +1,81 @@
+/* Futuristic Event Platform - CSS Variables */
+
+:root {
+  /* Fonts */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  
+  /* Core Colors - Dark Mode Default */
+  --bg-base: #050505;
+  --bg-surface: rgba(15, 15, 20, 0.6);
+  --bg-glass: rgba(255, 255, 255, 0.03);
+  --bg-glass-hover: rgba(255, 255, 255, 0.08);
+  
+  /* Accents */
+  --accent-primary: #00f0ff; /* Neon Cyan */
+  --accent-secondary: #7000ff; /* Deep Violet */
+  --accent-tertiary: #ff0055; /* Neon Pink */
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  --gradient-glow: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary), var(--accent-primary));
+  --gradient-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+  
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.4);
+  --text-inverse: #000000;
+  
+  /* Borders */
+  --border-glass: rgba(255, 255, 255, 0.1);
+  --border-glow: rgba(0, 240, 255, 0.3);
+  
+  /* Shadows */
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --shadow-glow: 0 0 20px rgba(0, 240, 255, 0.4), 0 0 40px rgba(112, 0, 255, 0.2);
+  --shadow-neon: 0 0 10px var(--accent-primary), 0 0 20px var(--accent-primary);
+  
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-normal: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-slow: 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 100px;
+  
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 96px;
+}
+
+/* Light Mode Overrides */
+[data-theme='light'] {
+  --bg-base: #f5f5f7;
+  --bg-surface: rgba(255, 255, 255, 0.7);
+  --bg-glass: rgba(255, 255, 255, 0.6);
+  --bg-glass-hover: rgba(255, 255, 255, 0.9);
+  
+  --text-primary: #111111;
+  --text-secondary: rgba(0, 0, 0, 0.7);
+  --text-muted: rgba(0, 0, 0, 0.4);
+  --text-inverse: #ffffff;
+  
+  --border-glass: rgba(0, 0, 0, 0.1);
+  --border-glow: rgba(0, 240, 255, 0.6);
+  
+  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  --shadow-glow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(112, 0, 255, 0.15);
+  
+  --accent-primary: #00b0ff; /* Slightly darker cyan for contrast */
+}

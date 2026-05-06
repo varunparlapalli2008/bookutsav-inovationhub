@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookUtsav - My Tickets</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .booking-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            margin-top: var(--space-xl);
+        }
+        
+        .booking-card {
+            display: flex;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .booking-card:hover {
+            transform: translateX(10px);
+            box-shadow: -5px 5px 20px rgba(0, 240, 255, 0.1);
+            border-left: 3px solid var(--accent-primary);
+        }
+        
+        .booking-date-col {
+            background: rgba(0, 0, 0, 0.4);
+            padding: var(--space-md) var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px dashed var(--border-glass);
+            min-width: 100px;
+        }
+        
+        .booking-info {
+            padding: var(--space-md) var(--space-lg);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .booking-actions {
+            padding: var(--space-md);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border-left: 1px dashed var(--border-glass);
+            min-width: 150px;
+        }
+        
+        @media (max-width: 768px) {
+            .booking-card { flex-direction: column; }
+            .booking-date-col, .booking-actions { border: none; border-bottom: 1px dashed var(--border-glass); }
+            .booking-actions { border-bottom: none; border-top: 1px dashed var(--border-glass); flex-direction: row; }
+        }
+        
+        .qr-mini {
+            width: 40px; height: 40px;
+            background: white;
+            border-radius: 4px;
+            display: flex; align-items: center; justify-content: center;
+            color: black;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="discovery.html" style="display:flex; align-items:center; gap:10px;">
+                    <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+                    BookUtsav
+                </a>
+            </div>
+            <nav class="nav-links">
+                <a href="discovery.html" class="nav-link">Discover</a>
+                <a href="upcoming.html" class="nav-link">Upcoming</a>
+                <a href="my-bookings.html" class="nav-link active">My Tickets</a>
+                <a href="account.html" class="btn-icon"><i class="fa-regular fa-user"></i></a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container main-content page-transition-enter">
+        <h1 class="text-gradient mt-4">My Bookings</h1>
+        <p class="text-secondary">Manage your event access and digital passes.</p>
+        
+        <div class="booking-list" id="bookingList">
+            <!-- Populated by JS -->
+        </div>
+    </main>
+
+    <!-- Mobile Nav -->
+    <nav class="mobile-nav">
+        <a href="discovery.html" class="mobile-nav-item"><i class="fa-solid fa-compass"></i><span>Explore</span></a>
+        <a href="upcoming.html" class="mobile-nav-item"><i class="fa-regular fa-calendar"></i><span>Upcoming</span></a>
+        <a href="my-bookings.html" class="mobile-nav-item active"><i class="fa-solid fa-ticket"></i><span>Tickets</span></a>
+        <a href="account.html" class="mobile-nav-item"><i class="fa-regular fa-user"></i><span>Profile</span></a>
+    </nav>
+
+    <!-- Pass Modal -->
+    <div id="passModal" class="modal-overlay">
+        <div class="glass-panel modal-content" style="padding: 0; overflow: hidden; background: transparent; border: none; box-shadow: none;">
+            <div class="ticket-card" style="margin: 0; max-width: 400px; margin-left: auto; margin-right: auto;">
+                <div class="ticket-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 style="margin: 0; font-size: 1.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3);"><i class="fa-solid fa-bolt"></i> BookUtsav Pass</h2>
+                    <button class="btn-icon" id="closePassModalBtn" style="color: white; width: 30px; height: 30px;"><i class="fa-solid fa-times"></i></button>
+                </div>
+                
+                <div class="ticket-body">
+                    <div class="flex justify-between mb-2">
+                        <span class="badge badge-primary">CONFIRMED</span>
+                        <span class="text-secondary" id="modalTicketId">ID: 000</span>
+                    </div>
+                    
+                    <h2 class="text-gradient mb-1" id="modalEventTitle">Event Title</h2>
+                    <p class="text-secondary mb-3" id="modalEventDate"><i class="fa-regular fa-calendar"></i> Date & Time</p>
+                    
+                    <div style="background: white; padding: 10px; border-radius: var(--radius-sm); width: 200px; height: 200px; margin: 0 auto var(--space-lg); display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-qrcode" style="font-size: 10rem; color: #000;"></i>
+                    </div>
+                    
+                    <div class="ticket-footer">
+                        <div>
+                            <div class="text-secondary text-sm">Admit</div>
+                            <div class="font-bold">1 Person</div>
+                        </div>
+                        <div>
+                            <div class="text-secondary text-sm">Seats</div>
+                            <div class="font-bold" id="modalSeats">General Access</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 15px; background: rgba(0,0,0,0.5); text-align: center;">
+                    <button class="btn btn-primary" style="width: 100%;" onclick="window.showToast('Downloading', 'Ticket PDF is being generated...', 'info')"><i class="fa-solid fa-download mr-1"></i> Download PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const list = document.getElementById('bookingList');
+            const bookings = window.dataManager.getBookings();
+            
+            if (bookings.length === 0) {
+                list.innerHTML = `
+                    <div class="glass-card text-center" style="padding: 3rem;">
+                        <i class="fa-solid fa-ticket text-muted" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <h3 class="text-secondary">No bookings found</h3>
+                        <p class="text-muted mb-3">You haven't secured any event access yet.</p>
+                        <a href="discovery.html" class="btn btn-primary">Discover Events</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort bookings newest first
+            bookings.sort((a, b) => new Date(b.bookingDate) - new Date(a.bookingDate));
+            
+            bookings.forEach((bkg, idx) => {
+                const event = window.dataManager.getEventById(bkg.eventId);
+                const evTitle = event ? event.title : bkg.eventTitle;
+                const evDate = event ? new Date(event.date) : new Date();
+                
+                const card = document.createElement('div');
+                card.className = `booking-card stagger-${(idx % 5) + 1}`;
+                card.innerHTML = `
+                    <div class="booking-date-col">
+                        <span class="text-primary font-bold" style="font-size: 1.5rem;">${evDate.getDate()}</span>
+                        <span class="text-secondary text-sm">${evDate.toLocaleString('default', { month: 'short' }).toUpperCase()}</span>
+                    </div>
+                    <div class="booking-info">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="badge badge-primary">CONFIRMED</span>
+                            <span class="text-secondary text-sm">ID: ${bkg.id.split('_')[1]}</span>
+                        </div>
+                        <h3 style="font-size: 1.25rem;">${evTitle}</h3>
+                        <p class="text-secondary text-sm mt-1">
+                            <i class="fa-solid fa-chair mr-1"></i> Seats: ${bkg.seats ? bkg.seats.join(', ') : 'General Access'}
+                        </p>
+                    </div>
+                    <div class="booking-actions">
+                        <div class="qr-mini"><i class="fa-solid fa-qrcode"></i></div>
+                        <button class="btn btn-outline view-pass-btn" data-id="${bkg.id}" data-title="${evTitle}" data-date="${evDate.toLocaleDateString()}" data-seats="${bkg.seats ? bkg.seats.join(', ') : 'General'}" style="padding: 0.5rem 1rem; font-size: 0.8rem; width: 100%;">View Pass</button>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+            
+            // View Pass Listeners
+            const passModal = document.getElementById('passModal');
+            document.getElementById('closePassModalBtn').addEventListener('click', () => {
+                passModal.classList.remove('active');
+            });
+
+            const passBtns = document.querySelectorAll('.view-pass-btn');
+            passBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById('modalTicketId').textContent = 'ID: ' + btn.dataset.id.split('_')[1];
+                    document.getElementById('modalEventTitle').textContent = btn.dataset.title;
+                    document.getElementById('modalEventDate').innerHTML = `<i class="fa-regular fa-calendar"></i> ${btn.dataset.date}`;
+                    document.getElementById('modalSeats').textContent = btn.dataset.seats;
+                    
+                    passModal.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

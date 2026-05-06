@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookUtsav - Booking Success</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .success-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: var(--space-xl) var(--space-md);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ticket-card {
+            width: 100%;
+            max-width: 400px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-glow);
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+            animation: slide-up-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        .ticket-header {
+            background: var(--gradient-primary);
+            padding: var(--space-md);
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        /* Notches for ticket look */
+        .ticket-card::before, .ticket-card::after {
+            content: '';
+            position: absolute;
+            top: 60px; /* aligns with header bottom */
+            width: 30px; height: 30px;
+            background: var(--bg-base);
+            border-radius: 50%;
+            z-index: 20;
+        }
+        
+        .ticket-card::before { left: -15px; box-shadow: inset -1px 0 0 var(--border-glass); }
+        .ticket-card::after { right: -15px; box-shadow: inset 1px 0 0 var(--border-glass); }
+        
+        .ticket-body {
+            padding: var(--space-xl);
+            border-top: 2px dashed rgba(255,255,255,0.2);
+            text-align: center;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px; height: 10px;
+            background-color: var(--accent-primary);
+            animation: fall linear forwards;
+        }
+        
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="success-wrapper">
+        
+        <div class="ticket-card">
+            <div class="ticket-header">
+                <h2 style="margin: 0; font-size: 1.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3);"><i class="fa-solid fa-bolt"></i> BookUtsav Pass</h2>
+            </div>
+            
+            <div class="ticket-body">
+                <div class="success-checkmark" style="margin-top: -10px;">
+                    <div class="success-checkmark__circle"></div>
+                    <div class="success-checkmark__check"></div>
+                </div>
+                
+                <h2 class="text-gradient mb-1">Booking Confirmed!</h2>
+                <p class="text-secondary mb-3" style="font-size: 0.875rem;">Your access has been secured in the bookutsav.</p>
+                
+                <div style="background: white; padding: 10px; border-radius: var(--radius-sm); width: 150px; height: 150px; margin: 0 auto var(--space-lg); display: flex; align-items: center; justify-content: center;">
+                    <i class="fa-solid fa-qrcode" style="font-size: 6rem; color: #000;"></i>
+                </div>
+                
+                <div class="flex justify-between items-center text-sm mb-1">
+                    <span class="text-secondary">Event ID:</span>
+                    <span class="font-bold font-mono">NX-847291</span>
+                </div>
+                <div class="flex justify-between items-center text-sm mb-3">
+                    <span class="text-secondary">Status:</span>
+                    <span class="text-primary font-bold">VERIFIED <i class="fa-solid fa-check-circle"></i></span>
+                </div>
+                
+                <div class="flex flex-col gap-2 mt-4">
+                    <button class="btn btn-primary w-100" id="downloadBtn"><i class="fa-solid fa-download mr-1"></i> Download Ticket</button>
+                    <a href="discovery.html" class="btn btn-outline w-100">Back to Discovery</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/theme.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Confetti Effect
+            const colors = ['#00f0ff', '#7000ff', '#ff0055', '#ffffff'];
+            for(let i=0; i<50; i++) {
+                const conf = document.createElement('div');
+                conf.className = 'confetti';
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.top = -20 + 'px';
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                conf.style.animationDelay = (Math.random() * 2) + 's';
+                document.body.appendChild(conf);
+                
+                // Cleanup
+                setTimeout(() => conf.remove(), 5000);
+            }
+            
+            document.getElementById('downloadBtn').addEventListener('click', function() {
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fa-solid fa-check"></i> Downloaded';
+                    setTimeout(() => this.innerHTML = originalText, 2000);
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookUtsav - Select Role</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .role-wrapper {
+            padding: var(--space-4xl) var(--space-md);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .role-header {
+            text-align: center;
+            margin-bottom: var(--space-3xl);
+            animation: slide-up-fade 0.8s ease-out;
+        }
+
+        .role-cards {
+            display: flex;
+            gap: var(--space-2xl);
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .role-card {
+            flex: 1;
+            min-width: 300px;
+            padding: var(--space-3xl) var(--space-xl);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-md);
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            background: rgba(15, 15, 20, 0.4);
+        }
+
+        .role-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .role-logo-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--border-glass);
+            margin: 0 auto var(--space-md);
+            transition: all 0.3s;
+            box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+
+        .role-card:hover .role-logo-wrapper {
+            transform: scale(1.1);
+            border-color: var(--accent-primary);
+            box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.3), 0 0 20px rgba(0, 240, 255, 0.2);
+        }
+
+        .role-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.4s ease;
+        }
+
+        .role-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* Promo Section */
+        .promo-section {
+            width: 100%;
+            max-width: 1000px;
+            margin-top: var(--space-4xl);
+        }
+
+        .promo-banner {
+            background: linear-gradient(45deg, rgba(112, 0, 255, 0.2), rgba(0, 240, 255, 0.2));
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid var(--border-glass);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            animation: rotate-slow 15s linear infinite;
+        }
+
+        @keyframes rotate-slow {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .promo-banner {
+                flex-direction: column;
+                text-align: center;
+                gap: var(--space-md);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+                BookUtsav
+            </div>
+            <div class="user-profile flex items-center gap-2">
+                <span class="text-secondary" id="userNameDisplay">User</span>
+                <a href="account.html" class="btn-icon" style="width:32px; height:32px;"><i class="fa-regular fa-user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="role-wrapper">
+        <div class="role-header">
+            <h1 class="text-gradient" style="font-size: 3rem;">Choose Your Path</h1>
+            <p class="text-secondary">Are you orchestrating the future, or experiencing it?</p>
+        </div>
+
+        <div class="role-cards">
+            <!-- Organizer Card -->
+            <a href="organizer-dashboard.html" class="glass-card role-card stagger-1">
+                <div class="role-logo-wrapper">
+                    <i class="fa-solid fa-calendar-check" style="font-size: 2.5rem; color: var(--accent-secondary);"></i>
+                    <i class="fa-solid fa-chart-line" style="font-size: 1.5rem; color: var(--accent-primary); margin-left: -10px; margin-bottom: -15px;"></i>
+                </div>
+                <h2>Event Organizer</h2>
+                <p class="text-secondary">Create immersive events, manage attendees, and track analytics in real-time.
+                </p>
+                <div class="btn btn-outline mt-2">Access Dashboard</div>
+            </a>
+
+            <!-- Attendee Card -->
+            <a href="discovery.html" class="glass-card role-card stagger-2">
+                <div class="role-logo-wrapper">
+                    <i class="fa-solid fa-ticket" style="font-size: 2.5rem; color: var(--accent-primary); transform: rotate(-15deg);"></i>
+                    <i class="fa-solid fa-star" style="font-size: 1.2rem; color: #ffd700; margin-left: -10px; margin-top: -20px;"></i>
+                </div>
+                <h2>Book Tickets</h2>
+                <p class="text-secondary">Discover next-gen concerts, tech summits, and exclusive VIP experiences.</p>
+                <div class="btn btn-primary mt-2">Explore Events</div>
+            </a>
+        </div>
+
+        <!-- Promotions -->
+        <div class="promo-section stagger-3 page-transition-enter">
+            <div class="promo-banner">
+                <div style="z-index: 1;">
+                    <span class="badge badge-vip mb-1">LIMITED OFFER</span>
+                    <h3>BookUtsav VIP Pass</h3>
+                    <p class="text-secondary">Get 20% off all event bookings this month.</p>
+                </div>
+                <div style="z-index: 1;">
+                    <div class="btn btn-primary" id="claimOfferBtn">Claim Offer</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/theme.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{"name": "Guest"}');
+            document.getElementById('userNameDisplay').textContent = user.name;
+            
+            const claimBtn = document.getElementById('claimOfferBtn');
+            if (claimBtn) {
+                claimBtn.addEventListener('click', () => {
+                    if (claimBtn.textContent === 'Claimed!') return;
+                    claimBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                    setTimeout(() => {
+                        claimBtn.innerHTML = 'Claimed! <i class="fa-solid fa-check ml-1"></i>';
+                        claimBtn.classList.replace('btn-primary', 'btn-outline');
+                        claimBtn.style.color = 'var(--accent-primary)';
+                        claimBtn.style.borderColor = 'var(--accent-primary)';
+                        if (window.showToast) {
+                            window.showToast('VIP Offer Claimed', '20% discount applied to your account.', 'success');
+                        }
+                    }, 1000);
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

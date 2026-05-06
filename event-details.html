@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookUtsav - Event Details</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .hero-banner {
+            height: 60vh;
+            min-height: 400px;
+            position: relative;
+            margin-top: 80px; /* nav offset */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to top, var(--bg-base) 0%, rgba(0,0,0,0.4) 100%);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            padding-bottom: var(--space-2xl);
+            animation: slide-up-fade 0.8s ease;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-2xl);
+            margin-top: -60px;
+            position: relative;
+            z-index: 20;
+        }
+        
+        @media (max-width: 992px) {
+            .details-grid { grid-template-columns: 1fr; }
+        }
+        
+        .info-panel {
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .countdown-box {
+            display: flex;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .time-block {
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--accent-primary);
+            border-radius: var(--radius-sm);
+            padding: var(--space-sm);
+            text-align: center;
+            min-width: 70px;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1) inset;
+        }
+        
+        .time-val { font-size: 1.5rem; font-weight: 700; font-family: var(--font-display); color: var(--accent-primary); }
+        .time-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); }
+        
+        .sticky-booking {
+            position: sticky;
+            top: 100px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="discovery.html" style="display:flex; align-items:center; gap:10px;">
+                    <div class="btn-icon" style="width:32px; height:32px; border:none; background:transparent;"><i class="fa-solid fa-arrow-left"></i></div>
+                    <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+                    BookUtsav
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div id="heroBanner" class="hero-banner page-transition-enter" style="background-image: url('https://images.unsplash.com/photo-1540039155732-d6749b9389bd?auto=format&fit=crop&w=1600&q=80');">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <span id="evCat" class="badge badge-primary mb-2">Concert</span>
+            <h1 id="evTitle" style="font-size: 4rem; text-shadow: 0 4px 20px rgba(0,0,0,0.8);">Neon Nights Cyber Concert</h1>
+            <div class="flex items-center gap-3 text-secondary mt-2">
+                <span><i class="fa-solid fa-calendar"></i> <span id="evDate">Aug 15, 2026</span></span>
+                <span><i class="fa-solid fa-clock"></i> <span id="evTime">21:00</span></span>
+                <span><i class="fa-solid fa-location-dot"></i> <span id="evLoc">Neo Tokyo Arena</span></span>
+            </div>
+        </div>
+    </div>
+
+    <main class="container page-transition-enter" style="animation-delay: 0.2s;">
+        <div class="details-grid">
+            
+            <!-- Left Column: Details -->
+            <div>
+                <div class="glass-card info-panel">
+                    <h2>About This Event</h2>
+                    <p id="evDesc" class="text-secondary mt-2" style="font-size: 1.1rem; line-height: 1.8;">
+                        Experience the ultimate futuristic music festival with holographic displays and pure synthwave energy. Prepare for an audiovisual journey that pushes the boundaries of reality.
+                    </p>
+                    
+                    <h3 class="mt-4 mb-2">Event Schedule</h3>
+                    <div style="border-left: 2px solid var(--accent-primary); padding-left: var(--space-md); display: flex; flex-direction: column; gap: var(--space-md);">
+                        <div>
+                            <div class="text-primary font-bold">19:00 - Gates Open</div>
+                            <div class="text-secondary text-sm">Security scan and VIP lounge access</div>
+                        </div>
+                        <div>
+                            <div class="text-primary font-bold">20:30 - Opening Act (Holo-DJ)</div>
+                            <div class="text-secondary text-sm">Warmup set with interactive light show</div>
+                        </div>
+                        <div>
+                            <div class="text-primary font-bold">22:00 - Main Headline</div>
+                            <div class="text-secondary text-sm">The full cyberpunk experience begins</div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="mt-4 mb-2">VIP Benefits</h3>
+                    <ul class="text-secondary" style="list-style-type: disc; margin-left: var(--space-lg);">
+                        <li>Priority Fast-Track Entry</li>
+                        <li>Access to Anti-Gravity Lounge</li>
+                        <li>Complimentary Synth-Cocktails</li>
+                        <li>Exclusive Meet & Greet via Neural Link</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Right Column: Booking Box -->
+            <div>
+                <div class="glass-card info-panel sticky-booking animated-border">
+                    <h3 class="text-center mb-3">Secure Your Entry</h3>
+                    
+                    <div class="countdown-box justify-center">
+                        <div class="time-block"><div class="time-val">12</div><div class="time-label">Days</div></div>
+                        <div class="time-block"><div class="time-val">08</div><div class="time-label">Hrs</div></div>
+                        <div class="time-block"><div class="time-val">45</div><div class="time-label">Min</div></div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center py-2" style="border-bottom: 1px solid var(--border-glass);">
+                        <span class="text-secondary">Standard Access</span>
+                        <span class="font-bold text-xl" id="evPrice">$150</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 mb-3">
+                        <span class="text-secondary flex items-center gap-1"><span class="badge badge-vip">VIP</span> Access</span>
+                        <span class="font-bold text-xl text-primary" id="evVipPrice">$300</span>
+                    </div>
+                    
+                    <button id="bookNowBtn" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; box-shadow: var(--shadow-glow);">
+                        INITIALIZE BOOKING <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                    
+                    <p class="text-center text-muted mt-2" style="font-size: 0.75rem;">
+                        <i class="fa-solid fa-shield-halved"></i> Secured by BookUtsav Quantum Encryption
+                    </p>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/theme.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const eventId = localStorage.getItem('currentEventId');
+            if (!eventId) {
+                window.location.href = 'discovery.html';
+                return;
+            }
+            
+            const evt = window.dataManager.getEventById(eventId);
+            if (!evt) return;
+            
+            // Populate Data
+            document.getElementById('evTitle').textContent = evt.title;
+            document.getElementById('evCat').textContent = evt.category;
+            document.getElementById('evDate').textContent = new Date(evt.date).toLocaleDateString();
+            document.getElementById('evTime').textContent = evt.time || '19:00';
+            document.getElementById('evLoc').textContent = evt.location;
+            document.getElementById('evDesc').textContent = evt.description || 'No description available.';
+            document.getElementById('evPrice').textContent = `$${evt.price}`;
+            document.getElementById('evVipPrice').textContent = `$${evt.vipPrice || evt.price * 2}`;
+            
+            // Hero Image
+            document.getElementById('heroBanner').style.backgroundImage = `url('${evt.image}')`;
+            
+            // Save base price for booking page
+            localStorage.setItem('currentEventPrice', evt.price);
+            
+            // Book Btn
+            document.getElementById('bookNowBtn').addEventListener('click', () => {
+                window.location.href = 'booking.html';
+            });
+        });
+    </script>
+</body>
+</html>

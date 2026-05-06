@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookUtsav - My Account</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xl);
+            padding: var(--space-xl);
+            margin-top: 80px;
+            margin-bottom: var(--space-xl);
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            box-shadow: var(--shadow-neon);
+            position: relative;
+        }
+        
+        .profile-avatar::after {
+            content: '';
+            position: absolute;
+            top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border: 2px dashed var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 10s linear infinite;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-header { flex-direction: column; text-align: center; gap: var(--space-md); }
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: var(--space-xl);
+        }
+        
+        @media (max-width: 768px) {
+            .settings-grid { grid-template-columns: 1fr; }
+        }
+        
+        .settings-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .settings-link {
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+            border: 1px solid transparent;
+        }
+        
+        .settings-link:hover, .settings-link.active {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--accent-primary);
+            border-color: rgba(0, 240, 255, 0.3);
+        }
+        
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--bg-surface);
+            transition: .4s;
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute; content: "";
+            height: 16px; width: 16px;
+            left: 3px; bottom: 3px;
+            background-color: var(--text-secondary);
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+            background-color: white;
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="discovery.html" style="display:flex; align-items:center; gap:10px;">
+                    <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+                    BookUtsav
+                </a>
+            </div>
+            <nav class="nav-links">
+                <a href="discovery.html" class="nav-link">Discover</a>
+                <a href="upcoming.html" class="nav-link">Upcoming</a>
+                <a href="my-bookings.html" class="nav-link">My Tickets</a>
+                <a href="account.html" class="btn-icon" style="color: var(--accent-primary); border-color: var(--accent-primary);"><i class="fa-regular fa-user"></i></a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container page-transition-enter">
+        
+        <div class="glass-panel profile-header animated-border">
+            <div class="profile-avatar">
+                <i class="fa-solid fa-user-astronaut"></i>
+            </div>
+            <div>
+                <h1 class="text-gradient" id="profileName">Loading...</h1>
+                <p class="text-secondary" id="profileEmail">user@bookutsav.com</p>
+                <div class="flex gap-2 mt-2" style="justify-content: inherit;">
+                    <span class="badge badge-primary">BookUtsav Member</span>
+                    <span class="badge" style="background: rgba(255,255,255,0.1); color: white;">Since 2026</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-grid">
+            <div class="settings-nav">
+                <div class="settings-link active" data-target="personal"><i class="fa-regular fa-id-badge mr-1"></i> Personal Info</div>
+                <div class="settings-link" data-target="security"><i class="fa-solid fa-shield-halved mr-1"></i> Security</div>
+                <div class="settings-link" data-target="notifications"><i class="fa-regular fa-bell mr-1"></i> Notifications</div>
+                <div class="settings-link" data-target="payment"><i class="fa-solid fa-wallet mr-1"></i> Payment Methods</div>
+                <div class="settings-link text-primary mt-2" id="logoutBtn" style="color: #ff0055;"><i class="fa-solid fa-power-off mr-1"></i> Terminate Session</div>
+            </div>
+            <div class="settings-content-wrapper">
+                <!-- Personal Info -->
+                <div id="section-personal" class="glass-card page-transition-enter">
+                    <h2 class="mb-3">Personal Information</h2>
+                    
+                    <form>
+                        <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                            <div class="floating-label-group" style="margin: 0;">
+                                <input type="text" id="inputName" class="form-control" placeholder=" " value="">
+                                <label>Full Name</label>
+                            </div>
+                            <div class="floating-label-group" style="margin: 0;">
+                                <input type="email" id="inputEmail" class="form-control" placeholder=" " value="" readonly style="opacity: 0.7;">
+                                <label>Email Address</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                            <div class="floating-label-group" style="margin: 0;">
+                                <input type="tel" class="form-control" placeholder=" " value="+1 (555) 019-8372">
+                                <label>Phone Number</label>
+                            </div>
+                            <div class="floating-label-group" style="margin: 0;">
+                                <input type="date" class="form-control" placeholder=" " value="1995-08-15">
+                                <label>Date of Birth</label>
+                            </div>
+                        </div>
+                        
+                        <button id="updateProfileBtn" class="btn btn-primary mt-3">Update Profile</button>
+                    </form>
+                </div>
+
+                <!-- Security -->
+                <div id="section-security" class="glass-card page-transition-enter" style="display:none;">
+                    <h2 class="mb-3">Security & Access</h2>
+                    <form>
+                        <div class="floating-label-group mb-3">
+                            <input type="password" class="form-control" placeholder=" ">
+                            <label>Current Password</label>
+                        </div>
+                        <div class="floating-label-group mb-3">
+                            <input type="password" class="form-control" placeholder=" ">
+                            <label>New Password</label>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="window.showToast('Security Updated', 'Password successfully changed.', 'success')">Update Password</button>
+                    </form>
+                    <div class="mt-4 pt-3" style="border-top:1px solid var(--border-glass);">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h4>Two-Factor Authentication (2FA)</h4>
+                                <p class="text-secondary text-sm">Add an extra layer of security</p>
+                            </div>
+                            <button type="button" class="btn btn-outline" onclick="window.showToast('2FA Setup', 'Scan the QR code on your authenticator app.', 'info')">Enable</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications -->
+                <div id="section-notifications" class="glass-card page-transition-enter" style="display:none;">
+                    <h2 class="mb-3">Notification Preferences</h2>
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h4>Email Updates</h4>
+                            <p class="text-secondary text-sm">Receive tickets and receipts via email</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h4>SMS Alerts</h4>
+                            <p class="text-secondary text-sm">Event reminders sent to your phone</p>
+                        </div>
+                        <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4>Marketing Promos</h4>
+                            <p class="text-secondary text-sm">Exclusive VIP offers and early access</p>
+                        </div>
+                        <label class="switch"><input type="checkbox"><span class="slider round"></span></label>
+                    </div>
+                </div>
+
+                <!-- Payment Methods -->
+                <div id="section-payment" class="glass-card page-transition-enter" style="display:none;">
+                    <h2 class="mb-3">Saved Payment Methods</h2>
+                    <div class="saved-card mb-3" style="background: linear-gradient(135deg, #1e1e2f, #2a2a40); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-glass); position: relative; overflow: hidden;">
+                        <i class="fa-brands fa-cc-visa" style="font-size: 2.5rem; color: #fff;"></i>
+                        <div class="mt-3 text-secondary" style="letter-spacing: 2px;">**** **** **** 4242</div>
+                        <div class="flex justify-between mt-2">
+                            <span class="text-sm text-secondary">User</span>
+                            <span class="text-sm text-secondary">12/28</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline" style="width: 100%;" onclick="window.showToast('Add Payment Method', 'Connecting to secure tokenization gateway...', 'info')"><i class="fa-solid fa-plus mr-1"></i> Add New Card</button>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+
+    <!-- Mobile Nav -->
+    <nav class="mobile-nav">
+        <a href="discovery.html" class="mobile-nav-item"><i class="fa-solid fa-compass"></i><span>Explore</span></a>
+        <a href="upcoming.html" class="mobile-nav-item"><i class="fa-regular fa-calendar"></i><span>Upcoming</span></a>
+        <a href="my-bookings.html" class="mobile-nav-item"><i class="fa-solid fa-ticket"></i><span>Tickets</span></a>
+        <a href="account.html" class="mobile-nav-item active"><i class="fa-solid fa-user"></i><span>Profile</span></a>
+    </nav>
+
+    <script src="js/theme.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{"name": "Guest", "email": "guest@bookutsav.com"}');
+            document.getElementById('profileName').textContent = user.name;
+            document.getElementById('profileEmail').textContent = user.email;
+            document.getElementById('inputName').value = user.name;
+            document.getElementById('inputEmail').value = user.email;
+            
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            });
+
+            // Settings Nav
+            const settingsLinks = document.querySelectorAll('.settings-link');
+            settingsLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (link.id === 'logoutBtn') return;
+                    settingsLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    // Hide all sections
+                    document.getElementById('section-personal').style.display = 'none';
+                    document.getElementById('section-security').style.display = 'none';
+                    document.getElementById('section-notifications').style.display = 'none';
+                    document.getElementById('section-payment').style.display = 'none';
+                    
+                    // Show target
+                    const targetId = link.dataset.target;
+                    if (targetId) {
+                        document.getElementById('section-' + targetId).style.display = 'block';
+                    }
+                });
+            });
+
+            const updateProfileBtn = document.getElementById('updateProfileBtn');
+            if (updateProfileBtn) {
+                updateProfileBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    updateProfileBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                    setTimeout(() => {
+                        updateProfileBtn.innerHTML = 'Update Profile';
+                        if (window.showToast) {
+                            window.showToast('Identity Synchronized', 'Your profile details have been updated.', 'success');
+                        }
+                    }, 1000);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
